@@ -20,17 +20,20 @@ function gerritGet (url, func){
 }
 
 
-
-//alert("hello world from vim");
-$( "#gerrit_header" ).remove();
 var get_url = "changes/330250/revisions/09ee4176e7394e0c29ca3fe948033d8ebae230ec/files";
 $( document ).ready(function() {
-    // Handler for .ready() called.
-    console.log('sup2');
-    $("#gerrit_ui").remove();
-    $("#toggleci").remove();
-    $( "body" ).add("<p>").text("Files changed: ");
+  // Handler for .ready() called.
 
+  // Cleanup Gerrit
+  $( "#gerrit_header" ).remove();
+  $( "#gerrit_ui").remove();
+  $( "#toggleci").remove();
+  $( "body" ).html("");
+
+  // Create our structure
+  $( "body" ).add("<p>").text("Files changed: ");
+
+  // Create list of files that have been changed
   gerritGet( get_url, function (data) {
     var items = [];
     $.each( data, function( index ) {
@@ -40,9 +43,5 @@ $( document ).ready(function() {
       "class": "files-modified-list",
       html: items.join( "" )
     }).appendTo( "body" );
-        //console.log( "Load was performed." );
   });
-
-
 });
-$( "body" ).html("");
