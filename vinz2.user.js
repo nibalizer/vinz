@@ -19,6 +19,7 @@ function gerritGet (url, func){
   });
 }
 
+// overload this to disable the hideci.js trickery
 window.onload = undefined
 
 var get_url = "changes/330250/revisions/09ee4176e7394e0c29ca3fe948033d8ebae230ec/files";
