@@ -23,7 +23,7 @@ function gerritGet (url, func){
 
 //alert("hello world from vim");
 $( "#gerrit_header" ).remove();
-var get_url = "https://review.openstack.org/changes/330250/revisions/09ee4176e7394e0c29ca3fe948033d8ebae230ec/files";
+var get_url = "changes/330250/revisions/09ee4176e7394e0c29ca3fe948033d8ebae230ec/files";
 $( document ).ready(function() {
     // Handler for .ready() called.
     console.log('sup2');
