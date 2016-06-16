@@ -19,6 +19,7 @@ function gerritGet (url, func){
   });
 }
 
+window.onload = undefined
 
 var get_url = "changes/330250/revisions/09ee4176e7394e0c29ca3fe948033d8ebae230ec/files";
 $( document ).ready(function() {
@@ -28,7 +29,6 @@ $( document ).ready(function() {
   $( "#gerrit_header" ).remove();
   $( "#gerrit_ui").remove();
   $( "#toggleci").remove();
-  $( "body" ).html("");
 
   // Create our structure
   $( "body" ).add("<p>").text("Files changed: ");
