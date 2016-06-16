@@ -10,11 +10,11 @@
 //
 
 function gerritGet (url, func){
-  var ret;
-  $.get( get_url, function( data ) {
+  console.log("looking up: " + url);
+  $.get( url, function( data ) {
   })
   .fail(function(data) {
-    ret = jQuery.parseJSON(data.responseText.slice(4));
+    var ret = jQuery.parseJSON(data.responseText.slice(4));
     func(ret);
   });
 }
@@ -30,6 +30,13 @@ $( document ).ready(function() {
   $( "#gerrit_ui").remove();
   $( "#toggleci").remove();
 
+  var window_url    = window.location.href;
+  var change_number = window_url.split('/')[5];
+  gerritGet("changes/" + change_number +  "/detail?O=404", function (data) {
+    console.log(data);
+    $( "body" ).add("<h1/>").text("Change #"+ data._number + " " + data.subject + " -- " + data.owner.name);
+  });
+
   // Create our structure
   $( "body" ).add("<p>").text("Files changed: ");
 
@@ -44,4 +51,5 @@ $( document ).ready(function() {
       html: items.join( "" )
     }).appendTo( "body" );
   });
+
 });
