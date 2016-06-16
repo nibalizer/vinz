@@ -36,6 +36,8 @@ $( document ).ready(function() {
     console.log(data);
     $( "body" ).append("<h1/>").text("Change #"+ data._number + " " + data.subject + " -- " + data.owner.name);
 
+    $( "<p>").text("Files changed:").appendTo( "body" );
+
     // Create list of files that have been changed
     var get_url = "changes/" + data._number + "/revisions/" + data.current_revision + "/files";
     gerritGet( get_url, function (data) {
