@@ -10,7 +10,6 @@
 //
 
 function gerritGet (url, func){
-  console.log("looking up: " + url);
   $.get( url, function( data ) {
   })
   .fail(function(data) {
@@ -36,17 +35,12 @@ $( document ).ready(function() {
 
   // Get auth Token
   $.get("/", function (data) {
-    console.log("foo");
-    //console.log(data);
     idx = data.search('xGerritAuth');
     var token = data.slice(idx + 13, idx + 13 + 32);
-    //var token = data.search('xGerritAuth').slice(34,66);
-    console.log("Token is " + token);
 
     var window_url    = window.location.href;
     var change_number = window_url.split('/')[5];
     gerritGet("changes/" + change_number +  "/detail?O=404", function (data) {
-      console.log(data);
       $( "body" ).append("<h1/>").text("Change #"+ data._number + " " + data.subject + " -- " + data.owner.name);
 
       $( "<p>").text("Files changed:").appendTo( "body" );
@@ -67,7 +61,6 @@ $( document ).ready(function() {
     $( "body" ).after( "<p>Press here to +1: <input type='button' id='vote'></p>" );
     $( "#vote" ).click(function() {
       var review = {"labels":{"Code-Review":1,"Workflow":0},"strict_labels":true,"drafts":"KEEP","comments":{},"message":"test"};
-      console.log(review);
       $.ajax({
               type:"POST",
               beforeSend: function (request)
@@ -80,7 +73,6 @@ $( document ).ready(function() {
               dataType: "json",
               contentType: 'application/json; charset=utf-8',
       });
-      console.log( "Sent review" );
     });
 
   }).fail(function(data) {
