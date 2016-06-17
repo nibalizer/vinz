@@ -59,12 +59,23 @@ $( document ).ready(function() {
         }).appendTo( "body" );
       });
     });
-    $( "body" ).after( "<p>Cast Your Vote: <input type='button' id='vote'></p>" );
+    $( "body" ).after( "<p>Press here to +1: <input type='button' id='vote'></p>" );
     $( "#vote" ).click(function() {
       var review = {"labels":{"Code-Review":1,"Workflow":0},"strict_labels":true,"drafts":"KEEP","comments":{},"message":"test"};
       console.log(review);
-      $.post( "changes/330860/revisions/ac2c4ea7ec7158f68813390324a1731a3e7043e5/review", review, function (data) { console.log("foo"); }, "json");
-      console.log( "Handler for .click() called." );
+      $.ajax({
+              type:"POST",
+              beforeSend: function (request)
+              {
+                  request.setRequestHeader("X-Gerrit-Auth", token);
+              },
+              url: "changes/330860/revisions/ac2c4ea7ec7158f68813390324a1731a3e7043e5/review",
+              data: JSON.stringify(review),
+              async: false,
+              dataType: "json",
+              contentType: 'application/json; charset=utf-8',
+      });
+      console.log( "Sent review" );
     });
 
   }).fail(function(data) {
