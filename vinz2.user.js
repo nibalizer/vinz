@@ -2,7 +2,7 @@
 // @name        vinz2
 // @namespace   vinz2
 // @description vinz2
-// @include     https://review.openstack.org/#/c/164357*
+// @include     https://review.openstack.org/#/c/*
 // @version     1
 // @grant       none
 // @require http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js
