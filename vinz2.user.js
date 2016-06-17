@@ -19,40 +19,58 @@ function gerritGet (url, func){
   });
 }
 
-// overload this to disable the hideci.js trickery
-window.onload = undefined
 
 $( document ).ready(function() {
   // Handler for .ready() called.
+  var token;
 
   // Cleanup Gerrit
   $( "#gerrit_header" ).remove();
   $( "#gerrit_ui").remove();
   $( "#toggleci").remove();
 
-  var window_url    = window.location.href;
-  var change_number = window_url.split('/')[5];
-  gerritGet("changes/" + change_number +  "/detail?O=404", function (data) {
-    console.log(data);
-    $( "body" ).append("<h1/>").text("Change #"+ data._number + " " + data.subject + " -- " + data.owner.name);
+  // Get auth Token
+  $.get("/", function (data) {
+    console.log("foo");
+    //console.log(data);
+    idx = data.search('xGerritAuth');
+    var token = data.slice(idx + 13, idx + 13 + 32);
+    //var token = data.search('xGerritAuth').slice(34,66);
+    console.log("Token is " + token);
 
-    $( "<p>").text("Files changed:").appendTo( "body" );
+    var window_url    = window.location.href;
+    var change_number = window_url.split('/')[5];
+    gerritGet("changes/" + change_number +  "/detail?O=404", function (data) {
+      console.log(data);
+      $( "body" ).append("<h1/>").text("Change #"+ data._number + " " + data.subject + " -- " + data.owner.name);
 
-    // Create list of files that have been changed
-    var get_url = "changes/" + data._number + "/revisions/" + data.current_revision + "/files";
-    gerritGet( get_url, function (data) {
-      var items = [];
-      $.each( data, function( index ) {
-        items.push( "<li id='" + index + "'>" + index + "</li>" );
+      $( "<p>").text("Files changed:").appendTo( "body" );
+
+      // Create list of files that have been changed
+      var get_url = "changes/" + data._number + "/revisions/" + data.current_revision + "/files";
+      gerritGet( get_url, function (data) {
+        var items = [];
+        $.each( data, function( index ) {
+          items.push( "<li id='" + index + "'>" + index + "</li>" );
+        });
+        $( "<ul/>", {
+          "class": "files-modified-list",
+          html: items.join( "" )
+        }).appendTo( "body" );
       });
-      $( "<ul/>", {
-        "class": "files-modified-list",
-        html: items.join( "" )
-      }).appendTo( "body" );
     });
-  });
-  $( "body" ).after( "<p>Cast Your Vote: <input type='button' id='vote'></p>" );
-  $( "#vote" ).click(function() {
-    alert( "Handler for .click() called." );
+    $( "body" ).after( "<p>Cast Your Vote: <input type='button' id='vote'></p>" );
+    $( "#vote" ).click(function() {
+      var review = {"labels":{"Code-Review":1,"Workflow":0},"strict_labels":true,"drafts":"KEEP","comments":{},"message":"test"};
+      console.log(review);
+      $.post( "changes/330860/revisions/ac2c4ea7ec7158f68813390324a1731a3e7043e5/review", review, function (data) { console.log("foo"); }, "json");
+      console.log( "Handler for .click() called." );
+    });
+
+  }).fail(function(data) {
+    console.log("Failed " + data);
   });
 });
+
+// overload this to disable the hideci.js trickery
+window.onload = undefined
