@@ -26,8 +26,10 @@ $( document ).ready(function() {
   // Handler for .ready() called.
   var token;
 
+  var $body = $('body');
+
+  $body.empty()
   // Cleanup Gerrit
-  $body.empty();
   //$( "#gerrit_header" ).remove();
   //$( "#gerrit_ui").remove();
   //$( "#toggleci").remove();
@@ -55,7 +57,9 @@ $( document ).ready(function() {
     var token = data.slice(idx + 13, idx + 13 + 32);
 
     var window_url    = window.location.href;
-    gerritGet("changes/" + change_number +  "/detail?O=404", function (data) {
+    var change_number = window_url.split('/')[5];
+    gerritGet("/changes/" + change_number +  "/detail?O=404", function (data) {
+      console.log("sup2");
       $('#header').text("#"+ data._number + " ")
         .append($("<small/>").text(data.subject))
         .append($("<h3/>").text(data.owner.username)
@@ -67,7 +71,7 @@ console.log(data);
 
 
       // Create list of files that have been changed
-      var get_url = "changes/" + data._number + "/revisions/" + data.current_revision + "/files";
+      var get_url = "/changes/" + data._number + "/revisions/" + data.current_revision + "/files";
       gerritGet( get_url, function (data) {
 console.log(data);
         var items = [];
