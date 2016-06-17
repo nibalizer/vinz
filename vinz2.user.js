@@ -51,4 +51,8 @@ $( document ).ready(function() {
       }).appendTo( "body" );
     });
   });
+  $( "body" ).after( "<p>Cast Your Vote: <input type='button' id='vote'></p>" );
+  $( "#vote" ).click(function() {
+    alert( "Handler for .click() called." );
+  });
 });
