@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Spencer's Exploratorium</title>
+    <script src="https://code.jquery.com/jquery-1.11.3.js"></script>
+    <script>
+$( document ).ready(function() {
+  // Handler for .ready() called.
+  $( "div" ).after("<p>YUM</p>");
+  $( "div" ).after( "<p>Cast Your Vote: <input type='button' id='vote'></p>" );
+
+  $( "#vote" ).click(function() {
+     var review = {"labels":{"Code-Review":1,"Workflow":0},"strict_labels":true,"drafts":"KEEP","comments":{},"message":"test"};
+     console.out(review);
+     $.post( "https://review.openstack.org/changes/330860/revisions/ac2c4ea7ec7158f68813390324a1731a3e7043e5/review", review, function (data) { console.log("foo"); }, "json");
+     console.log( "Handler for .click() called." );
+   });
+
+
+  $.get("/", function (data) {
+    console.log("foo");
+    idx = data.search('xGerritAuth');
+    var token = data.slice(idx + 13, idx + 13 + 32);
+    console.log("Token found as " + token);
+  });
+
+
+});
+
+    </script>
+  </head>
+  <body>
+    <div id="main"/>
+  </body>
+</html>
