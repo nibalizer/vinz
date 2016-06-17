@@ -1,7 +1,7 @@
 // ==UserScript==
-// @name        vinz2
-// @namespace   vinz2
-// @description vinz2
+// @name        vinz
+// @namespace   vinz
+// @description vinz
 // @include     https://review.openstack.org/#/c/*
 // @version     1
 // @grant       none
