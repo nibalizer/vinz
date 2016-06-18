@@ -99,6 +99,18 @@ console.log(data);
           contentType: 'application/json; charset=utf-8',
         });
       });
+      // Create list of votes
+      var items = [];
+      $.each( root_data.messages, function( index ) {
+        console.log(root_data.messages[index].author.name);
+        items.push( "<p class='list-group-item'>" + root_data.messages[index].author.name+  " -- " + root_data.messages[index].message + "</p>");
+      });
+      console.log(items);
+      $( "<div/>", {
+        "class": "files-modified-list list-group",
+        html: items.join( "" )
+      }).appendTo($info);
+      console.log('foo');
 
 
       // Create list of files that have been changed
