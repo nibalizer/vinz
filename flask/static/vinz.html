@@ -47,6 +47,9 @@ $( document ).ready(function() {
   $files = $("<div class='files col-md-8'>")
     .prepend($("<h2>").text("Files changed:"))
     .appendTo($row);
+  $reviews = $("<div class='info col-md-4'>")
+    .prepend($("<h2>").text("Code Review:"))
+    .appendTo($row);
   $row.appendTo($container);
   $container.appendTo($body);
 
@@ -111,6 +114,19 @@ console.log(data);
         html: items.join( "" )
       }).appendTo($info);
       console.log('foo');
+
+      // Create list of votes
+      var review_items = [];
+      $.each( root_data.labels, function( index ) {
+        $.each( root_data.labels[index].all, function( innerindex ) {
+          review_items.push( "<p class='list-group-item'>" + root_data.labels[index].all[innerindex].name +  " -- " + root_data.labels[index].all[innerindex].value + "</p>");
+        });
+      });
+      console.log(review_items);
+      $( "<div/>", {
+        "class": "files-modified-list list-group",
+        html: review_items.join( "" )
+      }).appendTo($reviews);
 
 
       // Create list of files that have been changed
