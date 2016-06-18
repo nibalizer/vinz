@@ -11,6 +11,11 @@
 
   <title>Gerrit by Vinz</title>
   <script src="https://code.jquery.com/jquery-1.11.3.js"></script>
+  <style>
+  #commit-message {
+    space: pre-line;
+  }
+  </style>
   <script>
 
 function gerritGet (url, func){
@@ -43,6 +48,9 @@ $( document ).ready(function() {
 
   $reviews = $("<div class='info col-md-4'>")
     .prepend($("<h2>").text("Code Review:"))
+    .appendTo($row);
+  $message = $("<div class='files col-md-8'>")
+    .prepend($("<h2>").text("Commit Message:"))
     .appendTo($row);
   $files = $("<div class='files col-md-8'>")
     .prepend($("<h2>").text("Files changed:"))
@@ -102,7 +110,7 @@ console.log(data);
           contentType: 'application/json; charset=utf-8',
         });
       });
-      // Create list of votes
+      // Create list of review messages
       var items = [];
       $.each( root_data.messages, function( index ) {
         console.log(root_data.messages[index].author.name);
@@ -110,7 +118,7 @@ console.log(data);
       });
       console.log(items);
       $( "<div/>", {
-        "class": "files-modified-list list-group",
+        "class": "review-messages-list list-group",
         html: items.join( "" )
       }).appendTo($info);
       console.log('foo');
@@ -127,7 +135,7 @@ console.log(data);
       });
       console.log(review_items);
       $( "<div/>", {
-        "class": "files-modified-list list-group",
+        "class": "code-review-list list-group",
         html: review_items.join( "" )
       }).appendTo($reviews);
 
@@ -135,7 +143,6 @@ console.log(data);
       // Create list of files that have been changed
       var get_url = "/changes/" + data._number + "/revisions/" + data.current_revision + "/files";
       gerritGet( get_url, function (data) {
-console.log(data);
         var items = [];
         var file_root = '/#/c/' + root_data._number + '/' + root_data.revisions[root_data.current_revision]._number + '/';
         $.each( data, function( index ) {
@@ -145,8 +152,18 @@ console.log(data);
           "class": "files-modified-list list-group",
           html: items.join( "" )
         }).appendTo($files);
-console.log('remove the styles');
+        console.log('remove the styles');
         setTimeout(function() { $('style').remove(); }, 5000);
+      });
+
+      // Create commit message box
+      var get_url = "/changes/" + data._number + "/revisions/" + data.current_revision + "/commit?links";
+      gerritGet( get_url, function (data) {
+        console.log(data.message);
+        $( "<div/>", {
+          "class": "commit-message-list list-group",
+          html: "<p id='commit-message' class='list-group-item'>" +  data.message + "</p>",
+        }).appendTo($message);
       });
     });
 
