@@ -41,14 +41,14 @@ $( document ).ready(function() {
   $("<div class='row'>").append($page_header.append($header)).appendTo($container);
   $row = $("<div class='row'>");
 
-  $info = $("<div class='info col-md-4'>")
-    .prepend($("<h2>").text("Information:"))
+  $reviews = $("<div class='info col-md-4'>")
+    .prepend($("<h2>").text("Code Review:"))
     .appendTo($row);
   $files = $("<div class='files col-md-8'>")
     .prepend($("<h2>").text("Files changed:"))
     .appendTo($row);
-  $reviews = $("<div class='info col-md-4'>")
-    .prepend($("<h2>").text("Code Review:"))
+  $info = $("<div class='info col-md-8'>")
+    .prepend($("<h2>").text("Information:"))
     .appendTo($row);
   $row.appendTo($container);
   $container.appendTo($body);
