@@ -118,8 +118,11 @@ console.log(data);
       // Create list of votes
       var review_items = [];
       $.each( root_data.labels, function( index ) {
+        review_items.push( "<p> "+ index + "</p>");
         $.each( root_data.labels[index].all, function( innerindex ) {
+          if ( typeof(root_data.labels[index].all[innerindex].value) !== 'undefined' ) {
           review_items.push( "<p class='list-group-item'>" + root_data.labels[index].all[innerindex].name +  " -- " + root_data.labels[index].all[innerindex].value + "</p>");
+          }
         });
       });
       console.log(review_items);
