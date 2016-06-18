@@ -60,6 +60,8 @@ python app.py
 
 ```
 
+12) Navigate to the flask url directly with your browser, and accept the untrusted certificate
+
 
 
 Use
