@@ -64,10 +64,41 @@ $( document ).ready(function() {
         .append($("<small/>").text(data.subject))
         .append($("<h3/>").text(data.owner.username)
           .append($("<small/>").text(" " + data.owner.name))
-          .append( "<form class='form-inline pull-right'><div class='form-group'><label class='sr-only' for='vote'>Vote:</label><div class='btn-group' role='group'><button class='form-control btn btn-primary' type='button' id='vote'><span class='glyphicon glyphicon-thumbs-up'></span></button><button class='form-control btn btn-primary' type='button' id='vote'><span class='glyphicon glyphicon-thumbs-down'></span></button></div></form>" ));
+          .append( "<form class='form-inline pull-right'><div class='form-group'><label class='sr-only' for='vote'>Vote:</label><div class='btn-group' role='group'><button class='form-control btn btn-primary' type='button' id='voteup'><span class='glyphicon glyphicon-thumbs-up'></span></button><button class='form-control btn btn-primary' type='button' id='votedown'><span class='glyphicon glyphicon-thumbs-down'></span></button></div></form>" ));
 
 console.log(data);
     var root_data = data;
+    $( "#voteup" ).click(function() {
+      var review = {"labels":{"Code-Review":1,"Workflow":0},"strict_labels":true,"drafts":"KEEP","comments":{},"message":"test"};
+      $.ajax({
+        type:"POST",
+        beforeSend: function (request)
+        {
+            request.setRequestHeader("X-Gerrit-Auth", token);
+        },
+        url: "/changes/" + data._number + "/revisions/" + data.current_revision + "/review",
+        data: JSON.stringify(review),
+        async: false,
+        dataType: "json",
+        contentType: 'application/json; charset=utf-8',
+      });
+    });
+    $( "#votedown" ).click(function() {
+        console.out("clicked!");
+      var review = {"labels":{"Code-Review":-1,"Workflow":0},"strict_labels":true,"drafts":"KEEP","comments":{},"message":"test"};
+      $.ajax({
+        type:"POST",
+        beforeSend: function (request)
+        {
+            request.setRequestHeader("X-Gerrit-Auth", token);
+        },
+        url: "/changes/" + data._number + "/revisions/" + data.current_revision + "/review",
+        data: JSON.stringify(review),
+        async: false,
+        dataType: "json",
+        contentType: 'application/json; charset=utf-8',
+      });
+    });
 
 
       // Create list of files that have been changed
@@ -88,21 +119,6 @@ console.log('remove the styles');
       });
     });
 
-    $( "#vote" ).click(function() {
-      var review = {"labels":{"Code-Review":1,"Workflow":0},"strict_labels":true,"drafts":"KEEP","comments":{},"message":"test"};
-      $.ajax({
-        type:"POST",
-        beforeSend: function (request)
-        {
-            request.setRequestHeader("X-Gerrit-Auth", token);
-        },
-        url: "changes/330860/revisions/ac2c4ea7ec7158f68813390324a1731a3e7043e5/review",
-        data: JSON.stringify(review),
-        async: false,
-        dataType: "json",
-        contentType: 'application/json; charset=utf-8',
-      });
-    });
 
   }).fail(function(data) {
     console.log("Failed " + data);
